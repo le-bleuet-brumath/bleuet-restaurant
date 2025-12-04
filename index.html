@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="fr">
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Bleuet - Restaurant Brumath</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        header.scrolled {
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .logo-text h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .logo-text p {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #374151;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .mobile-menu-btn span {
+            width: 24px;
+            height: 2px;
+            background: #1f2937;
+            transition: all 0.3s;
+        }
+
+        .mobile-menu {
+            display: none;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            padding: 1rem 0;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 1rem 2rem;
+            color: #374151;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .mobile-menu a:hover {
+            background: #eff6ff;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #4f46e5 100%);
+            position: relative;
+            overflow: hidden;
+            margin-top: 80px;
+            padding: 4rem 2rem;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 80px;
+            left: 40px;
+            width: 256px;
+            height: 256px;
+            background: rgba(59, 130, 246, 0.4);
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 80px;
+            right: 40px;
+            width: 384px;
+            height: 384px;
+            background: rgba(79, 70, 229, 0.4);
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: pulse 4s ease-in-out infinite 1s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: white;
+            max-width: 900px;
+        }
+
+        .hero-icon {
+            width: 112px;
+            height: 112px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            font-size: 56px;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+        }
+
+        .hero-subtitle {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .hero-location {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            color: #bfdbfe;
+        }
+
+        .hero-badges {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 1.25rem 3rem;
+            background: white;
+            color: #1e3a8a;
+            text-decoration: none;
+            border-radius: 9999px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #1e3a8a;
+            font-weight: bold;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #2563eb, #4f46e5);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.25rem;
+            color: #6b7280;
+            margin-bottom: 3rem;
+        }
+
+        /* About */
+        #apropos {
+            background: linear-gradient(to bottom, white, #eff6ff);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+
+        .photo-placeholder {
+            background: linear-gradient(135deg, #dbeafe 0%, #c7d2fe 100%);
+            border-radius: 24px;
+            height: 384px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            border: 4px solid #bfdbfe;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-placeholder::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(79, 70, 229, 0.1));
+        }
+
+        .photo-content {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .photo-content div:first-child {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .photo-content p {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        .photo-content small {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .about-text p {
+            font-size: 1.125rem;
+            color: #374151;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .about-text strong {
+            color: #1e3a8a;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid #dbeafe;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+        }
+
+        /* Menu du Jour */
+        .menu-highlight {
+            background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 24px;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 50px rgba(37, 99, 235, 0.3);
+        }
+
+        .menu-highlight-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .menu-highlight h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu-highlight p {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-price {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        /* Menu Tabs */
+        .menu-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 2rem;
+            background: white;
+            border: 2px solid #2563eb;
+            color: #2563eb;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .tab-btn:hover {
+            background: #eff6ff;
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: #2563eb;
+            color: white;
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .menu-category {
+            display: none;
+        }
+
+        .menu-category.active {
+            display: block;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .menu-item {
+            background: linear-gradient(to bottom right, white, #eff6ff);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 2px solid #dbeafe;
+            transition: all 0.3s;
+        }
+
+        .menu-item:hover {
+            border-color: #93c5fd;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .menu-item h4 {
+            font-size: 1.15rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            flex: 1;
+        }
+
+        .menu-item-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2563eb;
+            margin-left: 1rem;
+            white-space: nowrap;
+        }
+
+        .menu-item-desc {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .menu-section-title {
+            color: #1e3a8a;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 2.5rem 0 1.5rem;
+            text-align: center;
+        }
+
+        /* Reviews */
+        .reviews {
+            background: linear-gradient(to bottom, #eff6ff, white);
+            padding: 6rem 2rem;
+            border-radius: 20px;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .review-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            border: 2px solid #dbeafe;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stars {
+            color: #fbbf24;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .review-text {
+            color: #374151;
+            font-style: italic;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        .reviewer {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 1rem;
+        }
+
+        .reviewer-name {
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .review-date {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        /* Contact */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+        }
+
+        .contact-card {
+            background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 2px solid #dbeafe;
+        }
+
+        .contact-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-icon {
+            width: 48px;
+            height: 48px;
+            background: #2563eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .contact-item h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item p {
+            color: #374151;
+            font-size: 1.05rem;
+        }
+
+        .phone-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .horaires {
+            width: 100%;
+        }
+
+        .horaire-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            color: #374151;
+        }
+
+        .horaire-line strong {
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #bfdbfe;
+            border-radius: 12px;
+            font-family: inherit;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.15rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .success-msg {
+            display: none;
+            background: #d1fae5;
+            color: #065f46;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #10b981;
+        }
+
+        .success-msg.show {
+            display: block;
+            animation: slideDown 0.5s;
+        }
+
+        .error-msg {
+            display: none;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #dc2626;
+        }
+
+        .error-msg.show {
+            display: block;
+            animation: slideDown 0.5s;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .map-container {
+            margin-top: 2rem;
+            border-radius: 16px;
+            overflow: hidden;
+            height: 300px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 4px solid #dbeafe;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #1e3a8a 0%, #4f46e5 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-info {
+            color: #bfdbfe;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-tabs {
+                gap: 0.5rem;
+            }
+
+            .tab-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<script>
+    if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+            if (!user) {
+                window.netlifyIdentity.on("login", () => {
+                    document.location.href = "/admin/";
+                });
+            }
+        });
+    }
+</script>
+<body>
+    <header id="header">
+        <nav>
+            <a href="#accueil" class="logo-container">
+                <div class="logo-icon">🍴</div>
+                <div class="logo-text">
+                    <h1>Le Bleuet</h1>
+                    <p>Cuisine du Terroir</p>
+                </div>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="#apropos">À Propos</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#avis">Avis</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#accueil">Accueil</a>
+            <a href="#apropos">À Propos</a>
+            <a href="#menu">Menu</a>
+            <a href="#avis">Avis</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </header>
+
+    <div class="hero" id="accueil">
+        <div class="hero-content">
+            <div class="hero-icon">🍴</div>
+            <h1>Le Bleuet</h1>
+            <p class="hero-subtitle">Cuisine Traditionnelle & Terroir</p>
+            <p class="hero-location">Brumath • 14 Rue de la Gare</p>
+            
+            <div class="hero-badges">
+                <div class="badge">🏆 Produits Frais & Locaux</div>
+                <div class="badge">❤️ Cuisine Maison</div>
+                <div class="badge">⭐ Avis TripAdvisor</div>
+            </div>
+
+            <a href="#menu" class="btn-primary">Découvrir la Carte</a>
+        </div>
+    </div>
+
+    <section id="apropos">
+        <h2>À Propos</h2>
+        <div class="subtitle">Notre Histoire</div>
+
+        <div class="about-grid">
+            <div class="photo-placeholder">
+                <div class="photo-content">
+                    <div>🍴</div>
+                    <p>Le Bleuet</p>
+                    <small>Restaurant à Brumath</small>
+                </div>
+            </div>
+
+            <div class="about-text">
+                <p><strong>Passionnés de cuisine</strong>, Houdheyfa & Lou-Anne ont repris Le Bleuet pour vous faire découvrir une cuisine authentique et généreuse dans une ambiance conviviale et chaleureuse.</p>
+                <p>Nos plats sont préparés avec des <strong>produits frais et locaux</strong> dans le respect des traditions alsaciennes. Chaque recette est élaborée avec soin et passion.</p>
+                <p>Un cadre convivial et familial où il fait bon se retrouver pour partager un moment gourmand entre amis ou en famille.</p>
+            </div>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon">👨‍🍳</div>
+                <h3>Cuisine Maison</h3>
+                <p>Tous nos plats sont préparés sur place avec passion</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🥬</div>
+                <h3>Produits Locaux</h3>
+                <p>Produits frais du terroir alsacien</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🍷</div>
+                <h3>Spécialités Alsaciennes</h3>
+                <p>Tartes flambées, buewespaetzles...</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">⭐</div>
+                <h3>Qualité & Fraîcheur</h3>
+                <p>Sélection rigoureuse des producteurs</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu">
+        <h2>Notre Carte</h2>
+        <div class="subtitle">Cuisine du terroir • Produits frais • Fait maison</div>
+
+        <!-- MENU DU JOUR - MODIFIEZ ICI LES LIGNES CI-DESSOUS -->
+        <div class="menu-highlight">
+            <div class="menu-highlight-content">
+                <div>
+                    <h3>🍽️ Menu du Jour</h3>
+                    <p>✓ Entrée : Salade de saison</p>
+                    <p>✓ Plat : Bœuf bourguignon </p>
+                    <p>✓ Dessert : Crême brulée </p>
+                </div>
+                <div class="menu-price">12.90€</div>
+            </div>
+        </div>
+
+        <div class="menu-tabs">
+            <button class="tab-btn active" data-tab="aperitifs">🍷 Apéritifs</button>
+            <button class="tab-btn" data-tab="boissons">🥤 Boissons</button>
+            <button class="tab-btn" data-tab="entrees">🥗 Entrées</button>
+            <button class="tab-btn" data-tab="salades">🥬 Salades</button>
+            <button class="tab-btn" data-tab="plats">🍽️ Plats</button>
+            <button class="tab-btn" data-tab="buewespaetzles">🍝 Buewespaetzles</button>
+            <button class="tab-btn" data-tab="tartes">🔥 Tartes Flambées</button>
+            <button class="tab-btn" data-tab="desserts">🍰 Desserts</button>
+            <button class="tab-btn" data-tab="brunch">🥞 Brunch</button>
+        </div>
+
+        <!-- APÉRITIFS -->
+        <div class="menu-category active" id="aperitifs">
+            <h3 class="menu-section-title">🍷 Nos Apéritifs</h3>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-item-header">
+                        <h4>Crémant d'Alsace 12cl</h4>
+                        <span class="menu-item-price">4.50€</span></div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-header">
+                        <h4>Kir vin 12cl</h4>
+                        <span class="menu-item-price">3.90€</span>
+                    </div>
+                    <p class="menu-item-desc">Pêche, cassis ou mûre</p>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-header">
+                        <h4>Kir crémant 12cl</h4>
+                        <span class="menu-item-price">4.50€</span>
+                    </div>
+                    <p class="menu-item-desc">Pêche, cassis ou mûre</p>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-header">
+                        <h4>Ricard 2cl</h4>
+                        <span class="menu-item-price">3.20€</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-header">
+                        <h4>Suze 4cl</h4>
+                        <span class="menu-item-price">4.50€</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-header">
+                        <h4>Campari 4cl</h4>
+                        <span class="menu-item-price">4.50€</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-header">
+                        <h4>Martini blanc/rouge 4cl</h4>
+                        <span class="menu-item-price">4.50€</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-header">
+                        <h4>Vodka 4cl / Vodka tonic</h4>
+                        <span class="menu-item-price">5.90€ / 7.50€</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-header">
+                        <h4>Whisky 4cl / Whisky coco</h4>
+                        <span class="menu-item-price">5.90€ / 7.50€</span>
+                    </div>
+                </div>
+            </div><h3 class="menu-section-title">🍺 Nos Bières Pression</h3>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Meteor Pils</h4>
+                    <span class="menu-item-price">3.00€ / 4.00€</span>
+                </div>
+                <p class="menu-item-desc">25cl / 50cl</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Blanche</h4>
+                    <span class="menu-item-price">3.90€ / 5.50€</span>
+                </div>
+                <p class="menu-item-desc">25cl / 50cl</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Bière de saison 33cl</h4>
+                    <span class="menu-item-price">3.90€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Picon de Gyser</h4>
+                    <span class="menu-item-price">4.90€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Panache ou Monaco</h4>
+                    <span class="menu-item-price">3.00€ / 7.90€</span>
+                </div>
+                <p class="menu-item-desc">25cl / 1L</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Météor 0% sans alcool 33cl</h4>
+                    <span class="menu-item-price">4.90€</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOISSONS -->
+    <div class="menu-category" id="boissons">
+        <h3 class="menu-section-title">🥤 Softs & Boissons</h3>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Sirop</h4>
+                    <span class="menu-item-price">2.00€</span>
+                </div>
+                <p class="menu-item-desc">Grenadine, pêche, citron, menthe, orgeat, passion, fraise, violette</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Diabolo</h4>
+                    <span class="menu-item-price">3.00€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Limonade</h4>
+                    <span class="menu-item-price">2.80€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Jus de fruits</h4>
+                    <span class="menu-item-price">2.80€</span>
+                </div>
+                <p class="menu-item-desc">Orange, pomme, ananas, tomate</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Thé glacé Fuze tea</h4>
+                    <span class="menu-item-price">3.00€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Coca-Cola</h4>
+                    <span class="menu-item-price">3.50€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Schweppes agrume</h4>
+                    <span class="menu-item-price">3.50€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Schweppes tonic</h4>
+                    <span class="menu-item-price">3.00€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Orangina</h4>
+                    <span class="menu-item-price">3.00€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Perrier</h4>
+                    <span class="menu-item-price">3.50€</span>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="menu-section-title">💧 Eaux Minérales</h3>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Carafe bleue</h4>
+                    <span class="menu-item-price">5.50€ / 6.50€</span>
+                </div>
+                <p class="menu-item-desc">50cl / 1L</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Carafe verte</h4>
+                    <span class="menu-item-price">5.50€ / 6.50€</span>
+                </div>
+                <p class="menu-item-desc">50cl / 1L</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Carafe rouge</h4>
+                    <span class="menu-item-price">3.50€ / 6.50€</span>
+                </div>
+                <p class="menu-item-desc">50cl / 1L</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ENTRÉES -->
+    <div class="menu-category" id="entrees">
+        <h3 class="menu-section-title">🥗 Nos Entrées</h3>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Saumon fumé maison</h4>
+                    <span class="menu-item-price">12.90€</span>
+                </div>
+                <p class="menu-item-desc">Servi avec blinis et crème fraîche</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Planchette charcuterie</h4>
+                    <span class="menu-item-price">10.90€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Planchette fromage</h4>
+                    <span class="menu-item-price">9.90€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Planchette mixte</h4>
+                    <span class="menu-item-price">11.90€</span>
+                </div>
+                <p class="menu-item-desc">Charcuterie et fromage</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Salade grand-mère</h4>
+                    <span class="menu-item-price">8.90€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Escargots de Bourgogne (6)</h4>
+                    <span class="menu-item-price">9.90€</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SALADES -->
+    <div class="menu-category" id="salades">
+        <h3 class="menu-section-title">🥬 Nos Salades</h3>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Salade fraîcheur</h4>
+                    <span class="menu-item-price">14.90€</span>
+                </div>
+                <p class="menu-item-desc">Saumon fumé, crevettes, avocat, tomates cerises</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Salade croquante</h4>
+                    <span class="menu-item-price">13.90€</span>
+                </div>
+                <p class="menu-item-desc">Poulet pané, tomates, maïs, croûtons</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLATS -->
+    <div class="menu-category" id="plats">
+        <h3 class="menu-section-title">🍽️ Nos Plats Principaux</h3>
+        <p style="text-align: center; color: #6b7280; margin-bottom: 2rem;">Tous nos plats sont servis avec garniture au choix : frites, spätzle, salade ou légumes</p>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Bouchée à la reine</h4>
+                    <span class="menu-item-price">15.90€</span>
+                </div>
+                <p class="menu-item-desc">Ris de veau et champignons dans une sauce crémeuse</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Paleron de bœuf</h4>
+                    <span class="menu-item-price">17.90€</span>
+                </div>
+                <p class="menu-item-desc">Mijoté au vin rouge et carottes fondantes</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Escalope normande</h4>
+                    <span class="menu-item-price">16.90€</span>
+                </div>
+                <p class="menu-item-desc">Crème, champignons et calvados</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Cordon bleu maison</h4>
+                    <span class="menu-item-price">15.90€</span>
+                </div>
+                <p class="menu-item-desc">Jambon et fromage, panure croustillante</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Filet de sandre</h4>
+                    <span class="menu-item-price">18.90€</span>
+                </div>
+                <p class="menu-item-desc">Sauce au Riesling, spécialité alsacienne</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Jambonneau grillé</h4>
+                    <span class="menu-item-price">16.90€</span>
+                </div>
+                <p class="menu-item-desc">Doré au four, accompagné de moutarde</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Choucroute garnie</h4>
+                    <span class="menu-item-price">17.90€</span>
+                </div>
+                <p class="menu-item-desc">Traditionnelle avec charcuteries alsaciennes</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Baeckeoffe</h4>
+                    <span class="menu-item-price">18.90€</span>
+                </div>
+                <p class="menu-item-desc">Potée alsacienne de viandes marinées</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Rognons de veau à la moutarde</h4>
+                    <span class="menu-item-price">19.90€</span>
+                </div>
+                <p class="menu-item-desc">Sauce crémeuse à la moutarde à l'ancienne</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- BUEWESPAETZLES -->
+    <div class="menu-category" id="buewespaetzles">
+        <h3 class="menu-section-title">🍝 Buewespaetzles</h3>
+        <p style="text-align: center; color: #6b7280; margin-bottom: 2rem;">Spécialité alsacienne maison - Pâtes fraîches gratinées</p>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Buewespaetzles aux lardons</h4>
+                    <span class="menu-item-price">13.90€</span>
+                </div>
+                <p class="menu-item-desc">Gratinés au fromage avec lardons fumés</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Buewespaetzles au chèvre</h4>
+                    <span class="menu-item-price">14.90€</span>
+                </div>
+                <p class="menu-item-desc">Fromage de chèvre fondant et miel</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Buewespaetzles au saumon</h4>
+                    <span class="menu-item-price">15.90€</span>
+                </div>
+                <p class="menu-item-desc">Saumon fumé et crème fraîche</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TARTES FLAMBÉES -->
+    <div class="menu-category" id="tartes">
+        <h3 class="menu-section-title">🔥 Nos Tartes Flambées</h3>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Tarte flambée nature</h4>
+                    <span class="menu-item-price">9.90€</span>
+                </div>
+                <p class="menu-item-desc">Crème, oignons et lardons - La classique</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Tarte gratinée</h4>
+                    <span class="menu-item-price">10.90€</span>
+                </div>
+                <p class="menu-item-desc">Avec fromage fondu gratiné</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Tarte forestière</h4>
+                    <span class="menu-item-price">11.90€</span>
+                </div>
+                <p class="menu-item-desc">Champignons frais de saison</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Tarte munster</h4>
+                    <span class="menu-item-price">11.90€</span>
+                </div>
+                <p class="menu-item-desc">Fromage munster AOC alsacien</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Tarte saumon</h4>
+                    <span class="menu-item-price">12.90€</span>
+                </div>
+                <p class="menu-item-desc">Saumon fumé et aneth</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Tarte chèvre miel</h4>
+                    <span class="menu-item-price">11.90€</span>
+                </div>
+                <p class="menu-item-desc">Fromage de chèvre et miel de pays</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Tarte végétarienne</h4>
+                    <span class="menu-item-price">11.90€</span>
+                </div>
+                <p class="menu-item-desc">Légumes de saison grillés</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Tarte complète</h4>
+                    <span class="menu-item-price">13.90€</span>
+                </div>
+                <p class="menu-item-desc">Tous les ingrédients réunis</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- DESSERTS -->
+    <div class="menu-category" id="desserts">
+        <h3 class="menu-section-title">🍰 Nos Desserts</h3>
+        <p style="text-align: center; color: #6b7280; margin-bottom: 2rem;">Tous nos desserts sont faits maison</p>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Tarte flambée pomme cannelle</h4>
+                    <span class="menu-item-price">9.90€</span>
+                </div>
+                <p class="menu-item-desc">Supplément crémage 2.50€</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Tarte du jour</h4>
+                    <span class="menu-item-price">6.50€</span>
+                </div>
+                <p class="menu-item-desc">Chantilly maison et coulis</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Fondant au chocolat</h4>
+                    <span class="menu-item-price">8.60€</span>
+                </div>
+                <p class="menu-item-desc">Chantilly maison et boule vanille</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Crème brûlée</h4>
+                    <span class="menu-item-price">7.90€</span>
+                </div>
+                <p class="menu-item-desc">Recette traditionnelle</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Café viennois</h4>
+                    <span class="menu-item-price">8.20€</span>
+                </div>
+                <p class="menu-item-desc">Parfum à préciser</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Thé sensation</h4>
+                    <span class="menu-item-price">8.40€</span>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="menu-section-title">🍦 Nos Glaces</h3>
+        <p style="text-align: center; color: #6b7280; margin-bottom: 1.5rem;"><strong>Parfums :</strong> vanille, chocolat, café, yaourt, myrtille, citron, fraise, framboise, mangue, melon, pistache, caramel beurre salé, mandarine, menthe chocolat</p>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Coupe de Bleuet</h4>
+                    <span class="menu-item-price">7.40€</span>
+                </div>
+                <p class="menu-item-desc">2 boules vanille, coulis myrtille, 2 macarons, chantilly</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Dame blanche</h4>
+                    <span class="menu-item-price">7.20€</span>
+                </div>
+                <p class="menu-item-desc">3 boules vanille, sauce chocolat & chantilly</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Café liégeois</h4>
+                    <span class="menu-item-price">7.20€</span>
+                </div>
+                <p class="menu-item-desc">3 boules café, sauce chocolat & chantilly</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Coupe colonel</h4>
+                    <span class="menu-item-price">8.90€</span>
+                </div>
+                <p class="menu-item-desc">2 boules citron, vodka & chantilly</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Coupe iceberg</h4>
+                    <span class="menu-item-price">8.20€</span>
+                </div>
+                <p class="menu-item-desc">Chocolat, café & chantilly</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Kénigskopf glacé</h4>
+                    <span class="menu-item-price">8.60€</span>
+                </div>
+                <p class="menu-item-desc">Vanille, crème de framboise, coulis & chantilly</p>
+            </div>
+        </div>
+
+        <h3 class="menu-section-title">☕ Boissons Chaudes</h3>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Irish coffee</h4>
+                    <span class="menu-item-price">9.50€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Café alsacien</h4>
+                    <span class="menu-item-price">9.50€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Espresso</h4>
+                    <span class="menu-item-price">2.80€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Double espresso</h4>
+                    <span class="menu-item-price">4.90€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Thé Dammann</h4>
+                    <span class="menu-item-price">5.20€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Cappuccino / Café François</h4>
+                    <span class="menu-item-price">4.90€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Grand café</h4>
+                    <span class="menu-item-price">3.20€</span>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Latte</h4>
+                    <span class="menu-item-price">4.80€</span>
+                </div>
+                <p class="menu-item-desc">Noisette, vanille ou caramel</p>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h4>Chocolat chaud</h4>
+                    <span class="menu-item-price">5.50€</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BRUNCH -->
+    <div class="menu-category" id="brunch">
+        <h3 class="menu-section-title">🥞 Brunch du Dimanche</h3>
+        <p style="text-align: center; color: #6b7280; margin-bottom: 2rem; font-size: 1.1rem;">Tous les dimanches de 09h00 à 14h30</p>
+        <div class="menu-item" style="max-width: 700px; margin: 0 auto; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 3px solid #f59e0b;">
+            <div class="menu-item-header">
+                <h4 style="font-size: 1.5rem; color: #92400e;">Formule Brunch Complet</h4>
+                <span class="menu-item-price" style="font-size: 2rem; color: #ea580c;">22.00€</span>
+            </div>
+            <p class="menu-item-desc" style="font-size: 1.05rem; line-height: 2; color: #78350f; margin-top: 1rem;">
+                ☕ Boissons chaudes à volonté<br>
+                🥤 Jus de fruits frais<br>
+                🥐 Viennoiseries<br>
+                🥓 Charcuterie<br>
+                🧀 Fromages<br>
+                🍳 Plat chaud<br>
+                🍰 Dessert maison
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="reviews" id="avis">
+    <h2>Avis Clients</h2>
+    <div class="subtitle">Ce que nos clients disent de nous</div>
+
+    <div class="reviews-grid"><div class="review-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="review-text">"Les deux plats étaient succulents, joliment présentés et copieux. Nous avons ensuite enchaîné sur une coupe Bleuet et une Dame blanche. Nous avons passé un bon moment et je reviendrai prochainement."</p>
+                <div class="reviewer">
+                    <p class="reviewer-name">Client TripAdvisor</p>
+                    <p class="review-date">Novembre 2024</p>
+                </div>
+            </div>
+            <div class="review-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="review-text">"Excellent déjeuné dans ce très sympathique restaurant. En suggestion des rognons de veau à la moutarde qui étaient très bons ainsi que d'excellentes frites. Les desserts étaient tout aussi délicieux !"</p>
+                <div class="reviewer">
+                    <p class="reviewer-name">Client TripAdvisor</p>
+                    <p class="review-date">Octobre 2024</p>
+                </div>
+            </div>
+            <div class="review-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="review-text">"La bouchée à la reine exquise, avec une crème toute légère et un feuilleté aérien, ainsi qu'un paleron de bœuf fondant et goûteux. Un régal ! Accueil chaleureux avec une ambiance agréable."</p>
+                <div class="reviewer">
+                    <p class="reviewer-name">Client TripAdvisor</p>
+                    <p class="review-date">Novembre 2024</p>
+                </div>
+            </div>
+        </div>
+    </section><section id="contact">
+    <h2>Contact & Réservation</h2>
+    <div class="subtitle">Venez nous rendre visite ou réservez votre table</div>
+
+    <div class="contact-grid">
+        <div>
+            <div class="contact-card">
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                        <h3>Adresse</h3>
+                        <p>14 Rue de la Gare<br>67170 Brumath</p>
+                        <p style="color: #2563eb; margin-top: 0.5rem; font-weight: 600;">Juste en face de la gare SNCF</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-card" style="margin-top: 1.5rem;">
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div>
+                        <h3>Téléphone</h3>
+                        <a href="tel:0614848789" class="phone-number">06 14 84 87 89</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-card" style="margin-top: 1.5rem;">
+                <div class="contact-item">
+                    <div class="contact-icon">🕐</div>
+                    <div style="width: 100%;">
+                        <h3>Horaires</h3>
+                        <div class="horaires">
+                            <div class="horaire-line">
+                                <strong>Lundi</strong>
+                                <span style="color: #dc2626; font-weight: bold;">Fermé</span>
+                            </div>
+                            <div class="horaire-line">
+                                <strong>Mardi, Mercredi</strong>
+                                <span>11h30-14h30 • 18h30-22h30</span>
+                            </div>
+                            <div class="horaire-line">
+                                <strong>Jeudi</strong>
+                                <span style="color: #dc2626; font-weight: bold;">Fermé</span>
+                            </div>
+                            <div class="horaire-line">
+                                <strong>Vendredi, Samedi</strong>
+                                <span>11h30-14h30 • 18h30-22h30</span>
+                            </div>
+                            <div class="horaire-line">
+                                <strong>Dimanche</strong>
+                                <span>09h00-14h30</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="contact-card">
+                <div id="successMsg" class="success-msg">
+                    <strong>✅ Réservation envoyée avec succès !</strong><br>
+                    Nous vous confirmerons par téléphone dans les plus brefs délais.<br>
+                    À très bientôt au Bleuet ! 🍴
+                </div>
+                <div id="errorMsg" class="error-msg">
+                    <strong>❌ Erreur lors de l'envoi</strong><br>
+                    Veuillez réessayer ou nous appeler directement au 06 14 84 87 89
+                </div>
+
+                <h3 style="color: #1e3a8a; margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: bold;">Réserver une table</h3>
+                
+                <form action="https://formspree.io/f/xnnejyqj" method="POST" id="resaForm">
+                    <div class="form-group">
+                        <input type="text" name="nom" placeholder="Votre nom *" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Votre email">
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" name="telephone" placeholder="Votre téléphone *" required>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <input type="date" name="date" id="dateInput" required>
+                        </div>
+                        <div class="form-group">
+                            <select name="heure" required>
+                                <option value="">Heure *</option>
+                                <option>11:30</option>
+                                <option>12:00</option>
+                                <option>12:30</option>
+                                <option>13:00</option>
+                                <option>13:30</option>
+                                <option>18:30</option>
+                                <option>19:00</option>
+                                <option>19:30</option>
+                                <option>20:00</option>
+                                <option>20:30</option>
+                                <option>21:00</option>
+                                <option>21:30</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <select name="personnes" required>
+                            <option value="">Nombre de personnes *</option>
+                            <option>1 personne</option>
+                            <option>2 personnes</option>
+                            <option>3 personnes</option>
+                            <option>4 personnes</option>
+                            <option>5 personnes</option>
+                            <option>6 personnes</option>
+                            <option>7 personnes</option>
+                            <option>8 personnes</option>
+                            <option>9 personnes</option>
+                            <option>10 personnes</option>
+                            <option>Plus de 10</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="commentaire" rows="4" placeholder="Demandes spéciales (allergies, occasion...)"></textarea>
+                    </div>
+                    <input type="hidden" name="_subject" value="Nouvelle réservation - Le Bleuet">
+                    <button type="submit" class="btn-submit" id="submitBtn">Envoyer la réservation</button>
+                </form>
+            </div>
+
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2633.3!2d7.7010035!3d48.7325747!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDjCsDQzJzU3LjMiTiA3wrA0MicwMy42IkU!5e0!3m2!1sfr!2sfr!4v1" width="100%" height="100%" style="border:0;" allowfullscreen loading="lazy" title="Carte Le Bleuet"></iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-logo">
+        <div class="footer-icon">🍴</div>
+        <h3>Le Bleuet</h3>
+    </div>
+    <p class="footer-info">Restaurant • Cuisine du Terroir • Brumath</p>
+    <div class="footer-links">
+        <span>📞 06 14 84 87 89</span>
+        <span>📍 14 Rue de la Gare, Brumath</span>
+        <span>⭐ TripAdvisor</span>
+    </div>
+    <div class="footer-bottom">
+        <p style="color: #bfdbfe;">&copy; 2024 Le Bleuet Restaurant - Houdheyfa & Lou-Anne</p>
+        <p style="color: #93c5fd; margin-top: 0.5rem;">Cuisine Maison • Produits Locaux • Depuis Août 2024</p>
+    </div>
+</footer>
+
+<script>
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+        const header = document.getElementById('header');
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+
+    // Mobile menu
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    mobileMenuBtn.addEventListener('click', function() {
+        mobileMenu.classList.toggle('active');
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const offset = 80;
+                const top = target.offsetTop - offset;
+                window.scrollTo({ top, behavior: 'smooth' });
+                mobileMenu.classList.remove('active');
+            }
+        });
+    });
+
+    // Menu tabs
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const menuCategories = document.querySelectorAll('.menu-category');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            menuCategories.forEach(cat => cat.classList.remove('active'));
+            
+            this.classList.add('active');
+            document.getElementById(this.getAttribute('data-tab')).classList.add('active');
+        });
+    });
+
+    // Date minimum
+    document.getElementById('dateInput').min = new Date().toISOString().split('T')[0];
+
+    // Form submission with Formspree
+    document.getElementById('resaForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const form = e.target;
+        const submitBtn = document.getElementById('submitBtn');
+        const successMsg = document.getElementById('successMsg');
+        const errorMsg = document.getElementById('errorMsg');
+        
+        successMsg.classList.remove('show');
+        errorMsg.classList.remove('show');
+        
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = '📤 Envoi en cours...';
+        
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            });
+            
+            if (response.ok) {
+                successMsg.classList.add('show');
+                form.reset();
+                successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => successMsg.classList.remove('show'), 10000);
+            } else {
+                errorMsg.classList.add('show');
+                setTimeout(() => errorMsg.classList.remove('show'), 8000);
+            }
+        } catch (error) {
+            errorMsg.classList.add('show');
+            setTimeout(() => errorMsg.classList.remove('show'), 8000);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }
+    });
+</script></body>
+</html>
